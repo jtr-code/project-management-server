@@ -5,6 +5,10 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import cors from "cors";
 
+// ROUTES IMPORTS
+import projectRoutes from "./routes/projectRoutes";
+
+// CONFIGURATIONS
 dotenv.config();
 
 const app = express();
@@ -17,9 +21,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
+// ROUTES DECLARATION
 app.get("/", (req, res) => {
-  res.send("Hello world");
+  res.send("OK");
 });
+
+app.use("/projects", projectRoutes);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on port - ${process.env.PORT}`);
