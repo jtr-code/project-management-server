@@ -1,14 +1,12 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { title } from "process";
 
 const prisma = new PrismaClient();
 
-export const getSearchResult = async (req: Request, res: Response): Promise<void> => {
+export const search = async (req: Request, res: Response): Promise<void> => {
+  const { query } = req.query;
   try {
-    const { query } = req.query;
-
-    const taskResult = await prisma.task.findMany({
+    const tasks = await prisma.task.findMany({
       where: {
         OR: [
           { title: { contains: query as string } },
@@ -16,7 +14,8 @@ export const getSearchResult = async (req: Request, res: Response): Promise<void
         ],
       },
     });
-    const projectResult = await prisma.project.findMany({
+
+    const projects = await prisma.project.findMany({
       where: {
         OR: [
           { name: { contains: query as string } },
@@ -25,18 +24,15 @@ export const getSearchResult = async (req: Request, res: Response): Promise<void
       },
     });
 
-    const userResult = await prisma.user.findMany({
+    const users = await prisma.user.findMany({
       where: {
         OR: [{ username: { contains: query as string } }],
       },
     });
-
-    res.json({
-      taskResult,
-      projectResult,
-      userResult,
-    });
+    res.json({ tasks, projects, users });
   } catch (error: any) {
-    res.status(500).send({ message: `Error retrieving search results ${error.message}` });
+    res
+      .status(500)
+      .json({ message: `Error performing search: ${error.message}` });
   }
 };
