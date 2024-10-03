@@ -8,6 +8,7 @@ import cors from "cors";
 // ROUTES IMPORTS
 import projectRoutes from "./routes/projectRoutes";
 import taskRoutes from "./routes/taskRoutes";
+import searchRoutes from "./routes/searchRoutes";
 
 // CONFIGURATIONS
 dotenv.config();
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 
 app.use("/projects", projectRoutes);
 app.use("/tasks", taskRoutes);
+app.use("/search", searchRoutes);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on port - ${process.env.PORT}`);
