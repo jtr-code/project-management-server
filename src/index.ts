@@ -24,11 +24,13 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(cors({
-  origin: ['https://project-management-puce.vercel.app'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: ["https://project-management-puce.vercel.app"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true,
+  })
+);
 
 // ROUTES DECLARATION
 app.get("/", (req, res) => {
